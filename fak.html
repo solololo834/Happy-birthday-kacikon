@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+</head>
+<style>
+body {
+  background-color: pink;
+}
+
+@keyframes jalanKananKiri {
+  0% {
+    transform: translateX(0px);
+  }
+  
+  25% {
+    transform: translateX(100px);
+  }
+  
+  50% {
+    transform: translateX(0px);
+  }
+  
+  75% {
+    transform: translateX(-100px);
+  }
+  
+  100% {
+    transform: translateX(0px);
+  }
+}
+    #kue {
+    position: fixed;
+    width: 250px;
+    top: 120px;
+    left: 50px;
+  }
+  
+    #letter {
+    position: fixed;
+    width: 50px;
+  }
+  
+  #g1 {
+    position: fixed;
+    width: 100px;
+    top: 550px;
+  }
+  
+    #g2 {
+    position: fixed;
+    width: 100px;
+    left: 200px;
+    top: 550px;
+  }
+  
+  #po {
+    position: fixed;
+    width: 80px;
+    top: 550px;
+    left: 100px;
+    animation: jalanKananKiri 3s infinite ease-in-out;
+  }
+  
+  #game {
+    position: fixed;
+    width: 400px;
+    z-index: 10;
+    top: 60px;
+    left: -10px;
+  }
+</style>
+<body>
+  <audio src="hello-trailer_01.mp3" id="hel"></audio>
+  <img src="game.png" id="game" hidden/>
+ <img src="pocoyo.png" id="po"hidden />
+  <img src="gift.png" id="g1" />
+  <img src="gitfs.png" id="g2" />
+    <img src="kue.png" id="kue" />
+  <img src="mail.png" id="letter" onclick="surat()"/>
+</body>
+<script>
+alert("pencet kado nya untuk membuka kado")
+  function surat() {
+  window.location.href = "letter.html";
+}
+
+g1.onclick = function(){
+  alert("isi nya adalahh..")
+  po.hidden = false;
+  g1.src = "giftop.png"
+  hel.play();
+}
+
+g2.onclick = function(){
+  alert("isi nya adalahh..")
+  game.hidden = false;
+  setTimeout(() => {
+    alert("pencet game nya untuk main")
+}, 500);
+  setTimeout(() => {
+    game.hidden = true;
+  }, 5000);
+}
+
+game.onclick = function(){
+  window.location.href = "minigame.html";
+}
+</script>
+</html>
