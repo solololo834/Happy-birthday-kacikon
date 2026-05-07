@@ -1,1 +1,158 @@
 
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+</head>
+<style>
+@keyframes unh {
+0%  {
+    opacity: 0;
+  } 
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes hilang {
+0%  {
+    opacity: 1;
+  } 
+  100% {
+    opacity: 0;
+  }
+}
+
+.hilang {
+animation: hilang 1s forwards;
+}
+.balik {
+  animation: unh 1s forwards;
+}
+  body {
+    background-color: pink ;
+  }
+  
+  #ust {
+    position: fixed;
+    width: 400px;
+    top: -20px;
+    left: 0px;
+    Opacity: 0;
+  }
+  
+    #us {
+    position: fixed;
+    width: 350px;
+    top: 20px;
+    left: 0px;
+  }
+  
+  #kue {
+  position: fixed;
+  width: 250px;
+  top: 120px;
+  left: 50px;
+  opacity: 0;
+}
+  #start {
+    position: fixed;
+    top: 500px;
+    left: 150px;
+    padding: 20px;
+    font-size: 15px;
+   border-radius: 5px;
+   border: none;
+box-shadow: 5px 5px 10px gray;
+background-color: #FF9;
+  }
+  
+  #letter {
+    position: fixed;
+    width: 50px;
+    opacity: 0;
+  }
+  
+  #ci {
+    position: fixed;
+  }
+</style>
+<body>
+  <img src="us.png" id="us" />
+  <h1 id="ci">Happy birthday michiko</h1>
+  <img src="ust.png" id="ust" />
+  <img src="kue.png" id="kue" />
+  <img src="mail.png" id="letter" onclick="surat()"/>
+  <button type="submit" id="start" onclick="start()">Start</button>
+  <audio src="party-horn-soundeffectsfactory.mp3" id="trum"></audio>
+  <audio src="hb128.mp3" id="song"></audio>
+  <audio src="aplausos_2.mp3" id="clap"></audio>
+</body>
+<script>
+let alow = false;
+let alow1 = false;
+let alow2 = false;
+let alow3 = false;
+
+let starb = document.getElementById("start");
+
+let ust = document.getElementById("ust");
+
+let trum = document.getElementById("trum");
+
+let song = document.getElementById("song");
+
+let kue = document.getElementById("kue");
+
+let clap = document.getElementById("clap");
+
+  function start() {
+    ci.classList.add("hilang");
+    us.classList.add("hilang");
+starb.classList.add("hilang");
+ust.classList.add("balik");
+trum.play();
+song.play();
+setTimeout(() => {
+  ust.classList.remove("balik");
+  ust.classList.add("hilang");
+  kue.classList.add("balik");
+  alert("pencet layar untuk tiup lilinnya")
+  alow = true;
+  clap.play();
+}, 2000);
+  }
+  
+  document.body.onclick = function() {
+  
+  if (alow === true) {
+    kue.src = "kue1.png";
+    alert("Lagi! 1x");
+    
+    alow = false;
+    alow1 = true;
+  }
+  
+  else if (alow1 === true) {
+    kue.src = "kue2.png";
+    alert("Sebentar lagi! 2x");
+    
+    alow1 = false;
+    alow2 = true;
+  setTimeout(() => {
+  kue.src = "kue3.png"
+  letter.classList.add("balik");
+}, 2000);
+    
+  }
+  
+};
+
+function surat() {
+  window.location.href = "letter.html";
+}
+</script>
+  </html>
