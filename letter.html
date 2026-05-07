@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>surat</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: sans-serif;
+        }
+
+        .scroll-box {
+            width: 250px;
+            height: 300px;
+            overflow-y: auto;             background: white;
+            padding: 10px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 30px;
+            border: none;
+            border-radius: 8px;
+            background-color: #eee;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #ddd;
+        }
+
+        .scroll-box::-webkit-scrollbar {
+            width: 5px;
+        }
+        .scroll-box::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 10px;
+        }
+        
+        #cikon {
+            position: fixed;
+            width: 400px;
+        }
+        
+        #su {
+            position: fixed;
+            top: 50px;
+        }
+        
+            #home {
+    position: fixed;
+    width: 50px;
+    top: 0px;
+    left: -2px;
+  }
+    </style>
+</head>
+<header>
+    <h1 id="su">Surat</h1>
+</header>
+<body>
+    <img src="home.jpg" id="home"onclick="home()"/>
+<img src="cikon.jpg" id="cikon" hidden/>
+<audio src="fnaf-foxy-scream-sfx.mp3" id="foxy"></audio>
+    <div class="scroll-box">
+        <button class="btn" id="y">yomi</button>
+        <button class="btn" id="j">jojo</button>
+        <button class="btn" id="a">abah</button>
+        <button class="btn" id="b">boy</button>
+        <button class="btn" id="bu">bunda</button>
+    </div>
+<script>
+let count = 0;
+
+function cekCount() {
+    if (count == 5) {
+        alert("Shiro memberikan mu sebuah kado, pencet tombol home diatas untuk lihat kado");
+    }
+}
+
+y.onclick = function() {
+    alert("Yomi:Happy birthday sprout, umur naik tapi kok tinggi engga🤭")
+    count += 1;
+    cekCount();
+}
+
+a.onclick = function() {
+    alert("Abah: Tiada putus doa untuk anak, demi kesuksesan dunia dan akhirat")
+    count += 1;
+    cekCount();
+}
+
+j.onclick = function() {
+    alert("jojo: happy birthday kacikon")
+    count += 1;
+    cekCount();
+}
+
+b.onclick = function() {
+    cikon.hidden = false;
+    foxy.play();
+    
+    setTimeout(() => {
+        cikon.hidden = true;
+        alert("kaget ga?")
+    }, 2000);
+    
+    count += 1;
+    cekCount();
+}
+
+bu.onclick = function() {
+    alert("bunda: harus nya kaka yang ucapin ke bunda")
+    count += 1;
+    cekCount();
+}
+
+function home(){
+    window.location.href = "fak.html";
+}
+</script>
+</body>
+</html>
+
