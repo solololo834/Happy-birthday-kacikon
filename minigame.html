@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>accounting simulator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: white;
+            font-family: 'Quicksand', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            user-select: none;
+            touch-action: none;
+        }
+
+        .score-board {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+
+        #game-container {
+            position: relative;
+            width: 90vw;
+            max-width: 350px;
+            height: 250px;
+            background: #333;
+            border: 5px solid #555;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            touch-action: none;
+        }
+
+        #money-emoji {
+            font-size: 100px;
+            pointer-events: none;
+        }
+
+        #uv-light {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            background: radial-gradient(circle, rgba(138, 43, 226, 0.8) 0%, rgba(0, 0, 0, 0) 75%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            display: none;
+            z-index: 10;
+        }
+
+        .status {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 1rem;
+            text-align: center;
+            padding: 0 20px;
+            height: 50px;
+        }
+
+        button {
+            padding: 15px 25px;
+            border-radius: 12px;
+            border: none;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .btn-guess {
+            background-color: #444;
+            color: white;
+            margin: 10px;
+        }
+
+        .btn-reset {
+            background-color: #ff8c00;
+            color: white;
+            display: none;
+            margin-top: 10px;
+        }
+
+        #guess-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>accounting simulator</h1>
+<h2 id="tier">tier: noob 🥚</h2>
+
+<div class="score-board">
+    Points: <span id="points">0</span>
+</div>
+
+<div id="game-container">
+
+    <div id="guess-overlay">
+        <p style="margin-bottom: 15px; font-weight: bold;">
+            Tebak: Asli atau Palsu?
+        </p>
+
+        <div style="display: flex;">
+            <button class="btn-guess" onclick="makeGuess(false)">
+                ASLI
+            </button>
+
+            <button class="btn-guess" onclick="makeGuess(true)">
+                PALSU
+            </button>
+        </div>
+    </div>
+
+    <div id="money-emoji">💵</div>
+    <div id="uv-light"></div>
+
+</div>
+
+<div class="status" id="resultText">
+    Tebak dulu di atas!
+</div>
+
+<button id="resetBtn" class="btn-reset" onclick="resetGame()">
+    Cek Uang Lain
+</button>
+
+<script>
+const container = document.getElementById('game-container');
+const uvLight = document.getElementById('uv-light');
+const money = document.getElementById('money-emoji');
+const resultText = document.getElementById('resultText');
+const overlay = document.getElementById('guess-overlay');
+const pointsDisplay = document.getElementById('points');
+const resetBtn = document.getElementById('resetBtn');
+const tierDisplay = document.getElementById('tier');
+
+let isFake = Math.random() > 0.5;
+let points = 0;
+let hasGuessed = false;
+let userGuess = null;
+
+function makeGuess(guess) {
+    userGuess = guess;
+    hasGuessed = true;
+
+    overlay.style.display = 'none';
+
+    resultText.innerText =
+        "TAHAN & GESER di kotak untuk cek uang dengan sinar UV!";
+
+    resultText.style.color = "#8a2be2";
+}
+
+function handleMove(e) {
+
+    if (!hasGuessed) return;
+
+    const clientX =
+        e.touches ? e.touches[0].clientX : e.clientX;
+
+    const clientY =
+        e.touches ? e.touches[0].clientY : e.clientY;
+
+    const rect = container.getBoundingClientRect();
+
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+
+    uvLight.style.left = x + 'px';
+    uvLight.style.top = y + 'px';
+    uvLight.style.display = 'block';
+
+    const moneyRect = money.getBoundingClientRect();
+
+    if (
+        clientX > moneyRect.left &&
+        clientX < moneyRect.right &&
+        clientY > moneyRect.top &&
+        clientY < moneyRect.bottom
+    ) {
+
+        if (isFake) {
+
+            money.innerText = "💷";
+
+            finishRound(
+                "Palsu! 💷 (Gak ada hologram)",
+                "#ff4d4d"
+            );
+
+        } else {
+
+            money.innerText = "💵";
+
+            finishRound(
+                "Asli! ✨ (Ada hologram)",
+                "#4dff88"
+            );
+        }
+    }
+}
+
+function updateTier() {
+
+    if (points >= 5000) {
+
+        tierDisplay.innerText = "tier: master 👑";
+
+    } else if (points >= 3000) {
+
+        tierDisplay.innerText = "tier: expert 💎";
+
+    } else if (points >= 2000) {
+
+        tierDisplay.innerText = "tier: advanced 🔥";
+
+    } else if (points >= 1000) {
+
+        tierDisplay.innerText = "tier: intermediate ⚙️";
+
+    } else if (points >= 500) {
+
+        tierDisplay.innerText = "tier: rookie 🪵";
+
+    } else if (points >= 100) {
+
+        tierDisplay.innerText = "tier: beginner 🌱";
+
+    } else {
+
+        tierDisplay.innerText = "tier: noob 🥚";
+    }
+}
+
+function finishRound(text, color) {
+
+    resultText.innerText = text;
+    resultText.style.color = color;
+
+    resetBtn.style.display = 'block';
+
+    if (userGuess !== null) {
+
+        if (userGuess === isFake) {
+
+            points += 50;
+
+            pointsDisplay.innerText = points;
+
+            updateTier();
+
+            resultText.innerText +=
+                " | TEBAKAN BENAR! +50";
+
+        } else {
+
+            resultText.innerText +=
+                " | TEBAKAN SALAH!";
+        }
+
+        userGuess = null;
+    }
+}
+
+container.addEventListener(
+    'touchstart',
+    (e) => {
+
+        if (hasGuessed) {
+
+            handleMove(e);
+        }
+    },
+    { passive: false }
+);
+
+container.addEventListener(
+    'touchmove',
+    (e) => {
+
+        e.preventDefault();
+
+        handleMove(e);
+    },
+    { passive: false }
+);
+
+container.addEventListener(
+    'touchend',
+    () => {
+
+        uvLight.style.display = 'none';
+
+        if (hasGuessed) {
+
+            money.innerText = "💵";
+        }
+    }
+);
+
+container.addEventListener(
+    'mousedown',
+    (e) => {
+
+        if (hasGuessed) {
+
+            handleMove(e);
+        }
+    }
+);
+
+window.addEventListener(
+    'mousemove',
+    (e) => {
+
+        if (hasGuessed && e.buttons === 1) {
+
+            handleMove(e);
+        }
+    }
+);
+
+window.addEventListener(
+    'mouseup',
+    () => {
+
+        uvLight.style.display = 'none';
+
+        if (hasGuessed) {
+
+            money.innerText = "💵";
+        }
+    }
+);
+
+function resetGame() {
+
+    isFake = Math.random() > 0.5;
+
+    hasGuessed = false;
+
+    userGuess = null;
+
+    money.innerText = "💵";
+
+    resultText.innerText =
+        "Tebak dulu di atas!";
+
+    resultText.style.color = "white";
+
+    overlay.style.display = 'flex';
+
+    resetBtn.style.display = 'none';
+
+    uvLight.style.display = 'none';
+}
+</script>
+
+</body>
+</html>
